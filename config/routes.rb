@@ -1,15 +1,10 @@
 Rails.application.routes.draw do
 
   get 'welcome/index'
-
   get 'welcome/about'
 
   devise_for :users
 
-  def devise_for
-  end
-
-  get '/user/sign_up'
   root 'welcome#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
