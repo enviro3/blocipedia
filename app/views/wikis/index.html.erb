@@ -1,6 +1,13 @@
 <h1>All Wikis</h1>
 
 <%= link_to "New Wiki", new_wiki_path, class: 'btn btn-success' %>
-<% @wikis.each do |wiki| %>
+<!-- <% @wikis.each do |wiki| %>
   <p><%= link_to wiki.title, wiki_path(wiki.id) %></p>
+  <% if policy(@wiki).update? %>
+    <%= link_to "Edit wiki", edit_wiki_path(@wiki) %>
+  <% end %>
+<% end %>  -->
+
+<% policy_scope(@user.wikis).each do |wiki| %>
+  <p><%= link_to wiki.title, wiki_path(wiki) %></p>
 <% end %>
