@@ -2,16 +2,8 @@ class WikiPolicy < ApplicationPolicy
   attr_reader :user, :wiki
   class Scope < Scope
     def resolve
-      if user.admin?
-        scope.all
-      else
-        scope.where(published: true)
-      end
+      scope.all
     end
-  end
-
-  def update?
-    user.admin? or not post.published?
   end
 
   def initialize(user, wiki)

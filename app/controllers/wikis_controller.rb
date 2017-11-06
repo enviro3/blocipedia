@@ -1,10 +1,7 @@
 class WikisController < ApplicationController
   include Pundit
-  # after_action :verify_authorized, except: :index
-  # after_action :verify_policy_scoped, only: :index
-
-  before_action :require_sign_in, except: [:index, :show]
-  before_action :authorize_user, except: [:index, :show]
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def authorize_user
     wiki = Wiki.find(params[:id])
@@ -15,6 +12,7 @@ class WikisController < ApplicationController
   end
   def create
     @wiki = Wiki.new
+    authorize @wiki
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
 
@@ -28,11 +26,12 @@ class WikisController < ApplicationController
   end
 
   def show
+    skip_authorization
     @wiki = Wiki.find(params[:id])
   end
 
   def index
-    @wikis = WikiPolicy::Scope.new(current_user, Wiki).resolve
+    @wikis = policy_scope(Wiki)
   end
 
   def update
@@ -51,6 +50,7 @@ class WikisController < ApplicationController
 
   def destroy
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
 
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
@@ -63,10 +63,12 @@ class WikisController < ApplicationController
 
   def new
     @wiki = Wiki.new
+    authorize @wiki
   end
 
   def edit
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
 end
