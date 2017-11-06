@@ -11,6 +11,7 @@ end
 group :development do
   gem 'sqlite3'
   gem 'web-console', '~> 2.0'
+  gem 'faker'
 end
 
 gem 'devise'
@@ -28,9 +29,9 @@ group :development, :test do
   gem 'spring'
   gem 'rspec-rails'
   gem 'shoulda'
-  gem 'faker'
   gem 'factory_bot_rails'
   gem 'pry-rails'
+  gem 'faker'
 end
 
 gem 'bootstrap-sass'
