@@ -41,12 +41,14 @@ puts "#{Wiki.count} wikis were created!"
  member = User.create!(
    name:     'Member User',
    email:    'member@example.com',
-   password: 'helloworld'
+   password: 'helloworld',
+   role:     'member'
  )
 
 # create a premium member
  premium = User.create!(
    name:     'Premium User',
    email:    'premium@example.com',
-   password: 'helloworld'
+   password: 'helloworld',
+   role:     'premium'
  )
