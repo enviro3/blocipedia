@@ -10,6 +10,7 @@ class WikisController < ApplicationController
       redirect_to wikis_path
     end
   end
+  
   def create
     @wiki = Wiki.new
     authorize @wiki
@@ -39,6 +40,7 @@ class WikisController < ApplicationController
     authorize @wiki
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
+    @wiki.private = params[:wiki][:private]
     if @wiki.save
       flash[:notice] = "Wiki was updated."
       redirect_to @wiki

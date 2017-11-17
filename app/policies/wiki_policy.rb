@@ -10,4 +10,12 @@ class WikiPolicy < ApplicationPolicy
     @user = user
     @wiki = wiki
   end
+
+  def edit?
+    update?
+  end
+
+  def update?
+    (user.present? && wiki.public?)  || (user.present? && wiki.private? && user.admin?) || (user.present? && wiki.private? && user.premium? && wiki.user == user )
+  end
 end
