@@ -10,12 +10,14 @@ class WikisController < ApplicationController
       redirect_to wikis_path
     end
   end
-  
+
   def create
     @wiki = Wiki.new
     authorize @wiki
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
+    @wiki.user = current_user
+    @wiki.private = params[:wiki][:private] ? true:false 
 
     if @wiki.save
       flash[:notice] = "Wiki was saved."
@@ -27,8 +29,8 @@ class WikisController < ApplicationController
   end
 
   def show
-    skip_authorization
     @wiki = Wiki.find(params[:id])
+    authorize @wiki
   end
 
   def index

@@ -2,7 +2,11 @@ class WikiPolicy < ApplicationPolicy
   attr_reader :user, :wiki
   class Scope < Scope
     def resolve
-      scope.all
+      if user != nil && (user.admin? || user.premium?)
+        scope.all
+      else
+        scope.where(:private=>false)
+      end
     end
   end
 
@@ -11,8 +15,24 @@ class WikiPolicy < ApplicationPolicy
     @wiki = wiki
   end
 
+  def show?
+    if wiki.private
+      user != nil && (user.admin? || user.premium?)
+    else
+      true
+    end
+  end
+
+  def destroy?
+    wiki.user.id === user.id || user.admin?
+  end
+
   def edit?
     update?
+  end
+
+  def create?
+    user.present?
   end
 
   def update?

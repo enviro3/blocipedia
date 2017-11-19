@@ -32,8 +32,8 @@ puts "#{Wiki.count} wikis were created!"
 # create an admin user
  admin = User.create!(
    name:     'Admin User',
-   email:    'admin@example.com',
-   password: 'helloworld',
+   email:    'randomemail@random.com',
+   password: 'password',
    role:     'admin'
  )
 
@@ -48,7 +48,7 @@ puts "#{Wiki.count} wikis were created!"
 # create a premium member
  premium = User.create!(
    name:     'Premium User',
-   email:    'premium@example.com',
-   password: 'helloworld',
+   email:    'cvurlumis@gmail.com',
+   password: 'password',
    role:     'premium'
  )
