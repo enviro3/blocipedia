@@ -35,10 +35,9 @@ class ChargesController < ApplicationController
     }
   end
 
-  def cancel
-  end
-
   def destroy
+    current_user.downgrade_user!
     current_user.update(role:0)
   end
+
 end
