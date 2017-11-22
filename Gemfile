@@ -6,12 +6,12 @@ gem 'rails', '4.2.8'
 
 group :production do
   gem 'rails_12factor'
+  gem 'pg'
 end
 
 group :development do
   gem 'sqlite3'
   gem 'web-console', '~> 2.0'
-  gem 'faker'
 end
 
 gem 'devise'
