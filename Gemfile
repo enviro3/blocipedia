@@ -37,3 +37,4 @@ end
 gem 'bootstrap-sass'
 gem 'pundit'
 gem 'stripe'
+gem 'redcarpet'
