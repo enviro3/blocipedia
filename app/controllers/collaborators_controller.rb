@@ -1,46 +1,30 @@
 class CollaboratorsController < ApplicationController
 
   def create
-    puts "MADE IT HERE"
-    puts params[:collaborator]
-    puts params[:wiki]
+    user_id = params[:collaborator][:user_id]
+    wiki_id = params[:collaborator][:wiki_id]
 
-    @collaborator = Collaborator.new(user_id: collaborator_id, wiki_id: wiki.id)
+    collaborator = Collaborator.new(user_id: user_id, wiki_id: wiki_id)
 
-    # find collab with params[:collaborator]
-    @collaborator = Collaborator.find(params[:collaborator])
-
-    # find wiki with params[:wiki_id]
-    @wiki = Wiki.find(params[:id])
-
-    if @collaborator.save
-      flash[:notice] = "Collaborator was saved."
-      redirect_to @wiki
+    if collaborator.save
+      flash[:notice] = "The collaborator has been saved and now has access to this Wiki."
+      redirect_to :back
     else
-      flash.now[:alert] = "There was an error saving the collaborator. Please try again."
-      render :new
+      flash[:alert] = "The collaborator has not been saved. Please try again."
+      redirect_to :back
     end
-
-    # make a new Collaborator with:
-    # Collaborator.new(user_id: collab.id, wiki_id: wiki.id)
-    # save, and redirect
   end
 
 
   def destroy
-    # find collaborator
-    @collaborator = Collaborator.find(params[:collaborator])
+    collaborator = Collaborator.find(params[:id])
 
-    # delete collaborator
-    if @collaborator.destroy
-      flash[:notice] = "\"#{@collaborator}\" was deleted successfully."
-      redirect_to wikis_path
+    if collaborator.destroy
+      flash[:notice] = "The collaborator was deleted successfully."
+      redirect_to :back
     else
-      flash.now[:alert] = "There was an error deleting the collaborator."
-      render :show
+      flash.now[:alert] = "There was an error removing the collaborator."
+      redirect_to :back
     end
-
-    # redirect
-    redirect_to @wiki
   end
 end
