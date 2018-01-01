@@ -18,15 +18,6 @@ require 'faker'
 end
 
 puts "#{User.count} users were created!"
-
-# # create fake wikis
-# 30.times do
-#   wiki = Wiki.create!(
-#     title: Faker::Job.title,
-#     body: Faker::Hobbit.quote
-#   )
-# end
-
 puts "#{Wiki.count} wikis were created!"
 
 # create an admin user
@@ -52,3 +43,5 @@ puts "#{Wiki.count} wikis were created!"
    password: 'password',
    role:     'premium'
  )
+
+ premium.confirm
