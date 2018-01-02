@@ -1,54 +1,62 @@
 <div class="container">
   <div class="col-md-8">
     <%= form_for wiki do |f| %>
+
       <div class="form-group">
         <%= f.label :title %>
         <%= f.text_field :title, class: 'form-control', placeholder: "Enter Wiki Title" %>
       </div>
+
       <div class="form-group">
         <%= f.label :body %>
         <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter wiki body" %>
       </div>
+
       <% if current_user.admin? || current_user.premium? %>
+
         <div class="form-group">
           <%= f.label :private, class: 'checkbox' %>
           <%= f.check_box :private %> Private wiki
         </div>
+
+        <div class="form-group">
+          <%= f.submit "Save", class: 'btn btn-success' %>
+        </div>
+
         <div class="form-group">
           <%= f.label :collaborators %>
           <br/>
-          <%= f.text_field :collaborators, value: "", placeholder: "Enter Collaborators" %>
+          <% # check if premium/admin and maybe check if wiki is private %>
+          <% if current_user.admin? || (current_user.premium? && wiki.private?)%>
+            <% User.all.each do |user| %>
+              <% "================" %>
+              <%print wiki.collaborators %>
+              <%= form_for [wiki, Collaborator.new] do |collab_form| %>
+                <h1>
+                  <span>
+
+                    <%= user.email %>
+                    <% if wiki.collaborators.find {|collaborator| collaborator.user_id == user.id} != nil %>
+                      <%= link_to "Add", wiki_create_path(wiki.id, :user_ID => user.id), class: 'btn btn-info', method: :create %>
+                    <% else %>
+                      <% # find the collaborator for this user and wiki Collabotor.where(user_id: user.id, wiki_id: wiki.id).first %>
+                      <%= link_to "Delete", wiki_destroy_path(wiki.id, :user_ID => user.id), class: 'btn btn-danger', method: :destroy %>
+                    <% end %>
+                  </span>
+
+                </h1>
+              <% end %>
+
+            <% end %>
+
+          <% end %>
         </div>
       <% end %>
-      <div class="form-group">
-        <%= f.submit "Save", class: 'btn btn-success' %>
-      </div>
+
+
+
     <% end %>
   </div>
 
-  <% # check if premium/admin and maybe check if wiki is private %>
-  <% if current_user.admin? || current_user.premium? && wiki.private?%>
-    <% User.all.each do |user| %>
-      <% if wiki.collaborators.include?(user) == false #check if the user is not a collaborator %>
-        <%= form_for [wiki, Collaborator.new] do |collab_form| %>
-          <% # Reference the voting controller in bloccit %>
-          <% print "============" %>
-          <% print user.id  %>
-
-          <% # Pass as a param the user id as hidden input %>
-          <h1>
-            HI <%print User.all%>
-          </h1>
-          <% #Submit button that says "Add" %>
-          <button class= "button1">Add</button>
-
-
-        <% end %>
-      <% end %>
-    <% end %>
-  <% else %>
-    <% # find the collaborator for this user and wiki Collabotor.where(user_id: user.id, wiki_id: wiki.id).first%>
-    <% #link_to "Delete", wiki_collaborator_path(@wiki, collaborator), class: 'btn btn-danger', method: :delete%>
-  <% end %>
 
 </div>

@@ -1,17 +1,20 @@
 class CollaboratorsController < ApplicationController
 
   def create
-    puts "MADE IT HERE"
+    puts "MADE IT HERE==========================================================="
     puts params[:collaborator]
     puts params[:wiki]
+    puts params
+    user_id = params[:user_ID]
+    wiki_id = params[:wiki_id]
 
-    @collaborator = Collaborator.new(user_id: collaborator_id, wiki_id: wiki.id)
+    @collaborator = Collaborator.new(user_id: user_id, wiki_id: wiki_id)
 
     # find collab with params[:collaborator]
-    @collaborator = Collaborator.find(params[:collaborator])
+    # @collaborator = Collaborator.find(params[:collaborator])
 
     # find wiki with params[:wiki_id]
-    @wiki = Wiki.find(params[:id])
+    @wiki = Wiki.find(params[:wiki_id])
 
     if @collaborator.save
       flash[:notice] = "Collaborator was saved."
@@ -21,14 +24,11 @@ class CollaboratorsController < ApplicationController
       render :new
     end
 
-    # make a new Collaborator with:
-    # Collaborator.new(user_id: collab.id, wiki_id: wiki.id)
-    # save, and redirect
   end
 
 
   def destroy
-    # find collaborator
+    # find collaborator    THIS IS WRONG FIX IT!!!!
     @collaborator = Collaborator.find(params[:collaborator])
 
     # delete collaborator
