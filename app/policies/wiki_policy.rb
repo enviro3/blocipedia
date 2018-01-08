@@ -45,7 +45,8 @@ class WikiPolicy < ApplicationPolicy
       elsif user != nil && user.role == 'premium'
         all_wikis = scope.all
         all_wikis.each do |wiki|
-          if wiki.public? || wiki.user == user || wiki.collaborators.include?(user)
+          user_ids = wiki.collaborators.map {|collaborator| collaborator.user_id}
+          if wiki.public? || wiki.user == user || user_ids.include?(user.id)
             wikis << wiki # if the user is premium, only show them public wikis, or that private wikis they created, or private wikis they are a collaborator on
           end
         end
@@ -53,6 +54,7 @@ class WikiPolicy < ApplicationPolicy
         all_wikis = scope.all
         wikis = []
         all_wikis.each do |wiki|
+          user_ids = wiki.collaborators.map {|collaborator| collaborator.user_id}
           if wiki.public? || wiki.collaborators.include?(user)
             wikis << wiki # only show standard users public wikis and private wikis they are a collaborator on
           end

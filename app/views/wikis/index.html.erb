@@ -7,6 +7,6 @@
 <% @wikis.each do |wiki| %>
   <p><%= link_to wiki.title, wiki_path(wiki) %></p>
   <% if policy(wiki).update? %>
-    <%= link_to "Edit wiki", edit_wiki_path(wiki), class: 'btn btn-info' %>
+    <%= link_to "Edit Wiki", edit_wiki_path(wiki), class: 'btn btn-info' %>
   <% end %>
 <% end %>

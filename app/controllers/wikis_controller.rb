@@ -44,8 +44,6 @@ class WikisController < ApplicationController
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
     @wiki.private = params[:wiki][:private]
-    puts params
-    puts "==============================================================="
 
     #@wiki.collaborators = params[:wiki][:collaborators].split(',')
 
