@@ -27,7 +27,11 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    (user.present? && wiki.public?)  || (user.present? && wiki.private? && user.admin?) || (user.present? && wiki.private? && user.premium? && wiki.user == user )
+    user_ids = wiki.collaborators.map {|collaborator| collaborator.user_id}
+    (user.present? && wiki.public?)  ||
+    (user.present? && wiki.private? && user.admin?) ||
+    (user.present? && wiki.private? && user.premium? && wiki.user == user ) ||
+    (user_ids.include?(user.id))
   end
 
   class Scope < Scope
@@ -55,7 +59,7 @@ class WikiPolicy < ApplicationPolicy
         wikis = []
         all_wikis.each do |wiki|
           user_ids = wiki.collaborators.map {|collaborator| collaborator.user_id}
-          if wiki.public? || wiki.collaborators.include?(user)
+          if wiki.public? || user_ids.include?(user.id)
             wikis << wiki # only show standard users public wikis and private wikis they are a collaborator on
           end
         end

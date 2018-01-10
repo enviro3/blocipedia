@@ -2,17 +2,12 @@ require 'pp'
 class CollaboratorsController < ApplicationController
 
   def create
-    puts "Made it here ======================================"
     pp params
     user_id = params[:collaborator][:user_id]
     wiki_id = params[:collaborator][:wiki_id]
     puts user_id
     collaborator = Collaborator.new(user_id: user_id, wiki_id: wiki_id)
 
-    # find collab with params[:collaborator]
-    # @collaborator = Collaborator.find(params[:collaborator])
-
-    # find wiki with params[:wiki_id]
     @wiki = Wiki.find(wiki_id)
 
     if collaborator.save

@@ -1,8 +1,12 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   has_many :wikis
   has_many :collaborators
+
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  enum role: [:member, :admin, :premium]
+
+  before_save { self.role ||= :member }
 
 
   def downgrade_user!
@@ -12,12 +16,9 @@ class User < ActiveRecord::Base
       wiki.private = false
       wiki.save
     end
-
   end
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
-  before_save { self.role ||= :member }
-
-  enum role: [:member, :admin, :premium]
+  def self.all_except(user)
+    where.not(id: user)
+  end
 end
